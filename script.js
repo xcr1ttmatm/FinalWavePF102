@@ -3,6 +3,7 @@ const message = document.getElementById('message');
 const resetBtn = document.getElementById('resetBtn');
 const difficultyLabel = document.getElementById('difficulty-label');
 const highScoresList = document.getElementById('highScores');
+
 let minePositions = [];
 let score = 0;
 
@@ -30,6 +31,14 @@ function generateMines(count) {
     positions.add(Math.floor(Math.random() * 25));
   }
   return Array.from(positions);
+}
+
+function playSound(id) {
+  const sound = document.getElementById(id);
+  if (sound) {
+    sound.currentTime = 0;
+    sound.play();
+  }
 }
 
 function resetGame() {
@@ -61,12 +70,14 @@ function handleClick(event) {
   if (minePositions.includes(index)) {
     tile.classList.add('mine');
     tile.textContent = '💥';
+    playSound('bombSound');
     message.textContent = `Game Over! Score: ${score}`;
     revealAllMines();
     saveScore(score);
   } else {
     tile.classList.add('clicked');
     tile.textContent = '💎';
+    playSound('diamondSound');
     score++;
     checkWin();
   }
@@ -87,6 +98,7 @@ function checkWin() {
   const clickedTiles = document.querySelectorAll('.tile.clicked').length;
   if (clickedTiles === 25 - minePositions.length) {
     message.textContent = `You Win! Final Score: ${score}`;
+    playSound('winSound');
     revealAllMines();
     saveScore(score);
   }
@@ -96,9 +108,9 @@ function saveScore(score) {
   const difficulty = getDifficultyFromURL();
   const key = `scores-${difficulty}`;
   const existing = JSON.parse(localStorage.getItem(key)) || [];
-  existing.push(score); // Don't sort, just push to keep attempt order
+  existing.push(score);
   if (existing.length > 10) {
-    existing.shift(); // Attempts only
+    existing.shift();
   }
   localStorage.setItem(key, JSON.stringify(existing));
   renderScores();
@@ -137,6 +149,7 @@ function handleBack() {
 }
 
 resetBtn.addEventListener('click', resetGame);
+
 window.onload = () => {
   resetGame();
   renderScores();

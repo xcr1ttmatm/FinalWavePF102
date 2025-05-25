@@ -86,17 +86,44 @@
       box-shadow: 0 0 10px #FFD700;
     }
 
+    .toggle-button {
+      margin: 30px auto 10px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: linear-gradient(90deg, #FFA500, #FF8C00);
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 5px #FFA500;
+      transition: background 0.3s ease;
+    }
+
+    .toggle-button:hover {
+      background: linear-gradient(90deg, #FF8C00, #FFA500);
+      box-shadow: 0 0 10px #FFA500;
+    }
+
     .guide {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
       background: rgba(255, 215, 0, 0.1);
       border: 1px solid #FFD700;
       border-radius: 8px;
-      padding: 20px;
-      margin-top: 30px;
+      padding: 0 20px;
       color: #FFD700;
-      text-align: left;
       font-size: 1rem;
+      text-align: left;
       line-height: 1.5;
       box-shadow: 0 0 8px #B8860B inset;
+    }
+
+    .guide.show {
+      max-height: 300px;
+      padding: 20px;
+      opacity: 1;
     }
 
     .guide h2 {
@@ -120,7 +147,7 @@
 </head>
 <body>
   <div class="header">
-    <button class="back-button" onclick="window.location.href='index.html'">Back</button>
+    <button class="back-button" onclick="window.location.href='dashboard.html'">Back</button>
     <h1>Select Difficulty</h1>
   </div>
   <div class="content">
@@ -128,7 +155,9 @@
     <a href="game.html?difficulty=hard" class="difficulty-button">Hard</a>
     <a href="game.html?difficulty=insane" class="difficulty-button">Insane</a>
 
-    <div class="guide">
+    <button class="toggle-button" onclick="toggleGuide()">💣 View Difficulty Info</button>
+
+    <div class="guide" id="guideBox">
       <h2>Difficulty Levels</h2>
       <ul>
         <li><strong>Easy:</strong> Fewest mines, more safe tiles.</li>
@@ -137,5 +166,12 @@
       </ul>
     </div>
   </div>
+
+  <script>
+    function toggleGuide() {
+      const guide = document.getElementById('guideBox');
+      guide.classList.toggle('show');
+    }
+  </script>
 </body>
 </html>
