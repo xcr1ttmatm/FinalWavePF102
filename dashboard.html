@@ -13,8 +13,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 100vh;
-      position: relative;
+      min-height: 100vh;
       padding: 20px;
       box-sizing: border-box;
     }
@@ -26,58 +25,58 @@
       align-items: center;
       padding: 10px 20px;
       background: #0f2027;
-      position: relative;
-      border-radius: 5px;
+      border-radius: 8px;
       box-shadow: 0 0 10px #B8860B;
+      position: relative;
     }
 
     .header h1 {
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
     }
 
-    .back-button {
+    .quit-button {
       position: absolute;
-      left: 20px;
+      right: 20px;
       top: 50%;
       transform: translateY(-50%);
       padding: 8px 15px;
       font-size: 1rem;
-      background: linear-gradient(90deg, #FFD700, #B8860B);
+      background: linear-gradient(90deg, #FF6347, #B22222);
       border: none;
       border-radius: 5px;
       color: white;
       cursor: pointer;
       transition: background 0.3s ease;
       line-height: 1;
-      box-shadow: 0 0 5px #FFD700;
+      box-shadow: 0 0 5px #FF6347;
     }
 
-    .back-button:hover {
-      background: linear-gradient(90deg, #B8860B, #FFD700);
-      box-shadow: 0 0 10px #FFD700;
+    .quit-button:hover {
+      background: linear-gradient(90deg, #B22222, #FF6347);
+      box-shadow: 0 0 10px #FF6347;
     }
 
     .content {
       text-align: center;
-      margin-top: 40px;
+      margin-top: 50px;
       max-width: 600px;
       width: 100%;
     }
 
     .game-button {
       display: inline-block;
-      padding: 10px 20px;
-      font-size: 1rem;
+      padding: 12px 25px;
+      font-size: 1.1rem;
       background: linear-gradient(90deg, #FFD700, #B8860B);
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       color: white;
       text-decoration: none;
       cursor: pointer;
       transition: background 0.3s ease;
       box-shadow: 0 0 5px #FFD700;
-      margin-top: 20px;
+      margin-bottom: 30px;
     }
 
     .game-button:hover {
@@ -88,21 +87,20 @@
     .guide {
       background: rgba(255, 215, 0, 0.1);
       border: 1px solid #FFD700;
-      border-radius: 8px;
-      padding: 20px;
-      margin-top: 30px;
+      border-radius: 10px;
+      padding: 25px;
       color: #FFD700;
       text-align: left;
       font-size: 1rem;
-      line-height: 1.5;
+      line-height: 1.6;
       box-shadow: 0 0 8px #B8860B inset;
     }
 
     .guide h2 {
       margin-top: 0;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       color: #FFE066;
       text-shadow: 0 0 5px #FFD700;
     }
@@ -113,17 +111,17 @@
     }
 
     .guide ul li {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
   </style>
 </head>
 <body>
   <div class="header">
-    <button class="back-button" onclick="window.location.href='index.html'">Back</button>
-    <h1>User Dashboard</h1>
+    <h1>💣 Mines Game Dashboard</h1>
+    <button class="quit-button" onclick="window.location.href='index.html'">Quit</button>
   </div>
+
   <div class="content">
-    <a href="game.html" class="game-button">Proceed to Game</a>
     <a href="difficulties.html" class="game-button">Select Difficulty</a>
 
     <div class="guide">
