@@ -98,7 +98,6 @@ function checkWin() {
   const clickedTiles = document.querySelectorAll('.tile.clicked').length;
   if (clickedTiles === 25 - minePositions.length) {
     message.textContent = `You Win! Final Score: ${score}`;
-    playSound('winSound');
     revealAllMines();
     saveScore(score);
   }
@@ -144,7 +143,6 @@ function clearScores() {
 }
 
 function handleBack() {
-  clearScores();
   window.location.href = 'dashboard.html';
 }
 
