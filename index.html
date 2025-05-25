@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>💣Mines Game</title>
+  <style>
+    @keyframes pulse {
+      0%, 100% {
+        text-shadow: 0 0 8px #FFD700, 0 0 20px #B8860B;
+        transform: scale(1);
+      }
+      50% {
+        text-shadow: 0 0 15px #FFD700, 0 0 30px #B8860B;
+        transform: scale(1.1);
+      }
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .loading-container {
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      background: rgba(255, 215, 0, 0.1);
+      border: 2px solid #FFD700;
+      border-radius: 12px;
+      padding: 40px 30px;
+      box-shadow: 0 0 15px #B8860B;
+      user-select: none;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 30px;
+      animation: pulse 2s infinite;
+      color: #FFD700;
+      text-shadow: 0 0 10px #FFD700, 0 0 20px #B8860B;
+      cursor: default;
+    }
+
+    button.play-button {
+      padding: 14px 40px;
+      font-size: 1.25rem;
+      background: linear-gradient(90deg, #FFD700, #B8860B);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 0 10px #FFD700;
+      font-weight: 600;
+      letter-spacing: 1px;
+      user-select: none;
+    }
+
+    button.play-button:hover,
+    button.play-button:focus {
+      background: linear-gradient(90deg, #B8860B, #FFD700);
+      box-shadow: 0 0 20px #FFD700, 0 0 30px #B8860B;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="loading-container">
+    <h1>💣 Mines Game</h1>
+    <button class="play-button" onclick="localStorage.setItem('username', 'Player'); window.location.href = 'dashboard.html';">Play</button>
+  </div>
+</body>
+</html>

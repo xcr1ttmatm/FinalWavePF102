@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>💣Mines Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+      position: relative;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .header {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 20px;
+      background: #0f2027;
+      position: relative;
+      border-radius: 5px;
+      box-shadow: 0 0 10px #B8860B;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .back-button {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 8px 15px;
+      font-size: 1rem;
+      background: linear-gradient(90deg, #FFD700, #B8860B);
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 0 5px #FFD700;
+    }
+
+    .back-button:hover {
+      background: linear-gradient(90deg, #B8860B, #FFD700);
+      box-shadow: 0 0 10px #FFD700;
+    }
+
+    .content {
+      text-align: center;
+      margin-top: 30px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    #difficulty-label {
+      margin-top: 10px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #FFD700;
+    }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(5, 60px);
+      grid-gap: 10px;
+      justify-content: center;
+      margin: 20px auto;
+    }
+
+    .tile {
+      width: 60px;
+      height: 60px;
+      background-color: #203a43;
+      border: 2px solid #FFD700;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 2rem;
+      color: white;
+      user-select: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+
+    .tile:hover {
+      background-color: #FFD700;
+      transform: scale(1.05);
+    }
+
+    .tile.clicked {
+      background-color: #27ae60;
+      cursor: default;
+    }
+
+    .tile.mine {
+      background-color: #c0392b;
+      cursor: default;
+    }
+
+    .game-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background: linear-gradient(90deg, #FFD700, #B8860B);
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      box-shadow: 0 0 5px #FFD700;
+    }
+
+    .game-button:hover {
+      background: linear-gradient(90deg, #B8860B, #FFD700);
+      box-shadow: 0 0 10px #FFD700;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      min-height: 28px;
+      font-weight: bold;
+      color: #FFE066;
+      text-shadow: 0 0 5px #FFD700;
+    }
+
+    .score-panel {
+      position: absolute;
+      top: 100px;
+      right: 20px;
+      background: rgba(255, 215, 0, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #FFD700;
+      width: 160px;
+      box-shadow: 0 0 8px #B8860B inset;
+    }
+
+    .score-panel h3 {
+      margin: 0 0 10px;
+      font-size: 1.1rem;
+      color: #FFD700;
+      text-align: center;
+      text-shadow: 0 0 5px #FFD700;
+    }
+
+    .score-panel ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      color: #FFD700;
+    }
+
+    .score-panel li {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+
+    .score-panel button {
+      margin-top: 10px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <button onclick="window.location.href='dashboard.html'" class="back-button">Back</button>
+    <h1>💣 Mines Game</h1>
+  </div>
+
+  <div class="content">
+    <div id="difficulty-label"></div>
+    <div id="grid"></div>
+    <div class="button-container">
+      <button id="resetBtn" class="game-button">Try Again</button>
+    </div>
+    <div id="message"></div>
+  </div>
+
+  <div class="score-panel">
+    <h3>High Scores</h3>
+    <ul id="highScores"></ul>
+    <button class="game-button" onclick="clearScores()">Clear Scores</button>
+  </div>
+
+  <script>
+    const grid = document.getElementById('grid');
+    const message = document.getElementById('message');
+    const resetBtn = document.getElementById('resetBtn');
+    const difficultyLabel = document.getElementById('difficulty-label');
+    const highScoresList = document.getElementById('highScores');
+    let minePositions = [];
+    let score = 0;
+
+    function getDifficultyFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('difficulty') || 'easy';
+    }
+
+    function getMineCount(difficulty) {
+      switch (difficulty.toLowerCase()) {
+        case 'hard': return 5;
+        case 'insane': return 7;
+        default: return 3;
+      }
+    }
+
+    function formatDifficultyText(difficulty, mineCount) {
+      const capitalized = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+      return `Difficulty: ${capitalized} (${mineCount} Bomb${mineCount > 1 ? 's' : ''})`;
+    }
+
+    function generateMines(count) {
+      const positions = new Set();
+      while (positions.size < count) {
+        positions.add(Math.floor(Math.random() * 25));
+      }
+      return Array.from(positions);
+    }
+
+    function resetGame() {
+      grid.innerHTML = '';
+      message.textContent = '';
+      score = 0;
+
+      const difficulty = getDifficultyFromURL();
+      const mineCount = getMineCount(difficulty);
+
+      difficultyLabel.textContent = formatDifficultyText(difficulty, mineCount);
+      minePositions = generateMines(mineCount);
+
+      for (let i = 0; i < 25; i++) {
+        const tile = document.createElement('div');
+        tile.classList.add('tile');
+        tile.dataset.index = i;
+        tile.addEventListener('click', handleClick);
+        grid.appendChild(tile);
+      }
+    }
+
+    function handleClick(event) {
+      const tile = event.currentTarget;
+      const index = parseInt(tile.dataset.index);
+
+      if (tile.classList.contains('clicked') || tile.classList.contains('mine')) return;
+
+      if (minePositions.includes(index)) {
+        tile.classList.add('mine');
+        tile.textContent = '💥';
+        message.textContent = `Game Over! Score: ${score}`;
+        revealAllMines();
+        saveScore(score);
+      } else {
+        tile.classList.add('clicked');
+        tile.textContent = '💎';
+        score++;
+        checkWin();
+      }
+    }
+
+    function revealAllMines() {
+      document.querySelectorAll('.tile').forEach(tile => {
+        const index = parseInt(tile.dataset.index);
+        if (minePositions.includes(index)) {
+          tile.classList.add('mine');
+          tile.textContent = '💥';
+        }
+        tile.removeEventListener('click', handleClick);
+      });
+    }
+
+    function checkWin() {
+      const clickedTiles = document.querySelectorAll('.tile.clicked').length;
+      if (clickedTiles === 25 - minePositions.length) {
+        message.textContent = `You Win! Final Score: ${score}`;
+        revealAllMines();
+        saveScore(score);
+      }
+    }
+
+    function saveScore(score) {
+      const difficulty = getDifficultyFromURL();
+      const key = `scores-${difficulty}`;
+      const existing = JSON.parse(localStorage.getItem(key)) || [];
+      existing.push(score);
+      existing.sort((a, b) => b - a);
+      localStorage.setItem(key, JSON.stringify(existing.slice(0, 5)));
+      renderScores();
+    }
+
+    function renderScores() {
+      const difficulty = getDifficultyFromURL();
+      const key = `scores-${difficulty}`;
+      const scores = JSON.parse(localStorage.getItem(key)) || [];
+      highScoresList.innerHTML = scores.map((s, i) => `<li>${i + 1}st attempt: ${s}</li>`).join('');
+    }
+
+    function clearScores() {
+      const difficulty = getDifficultyFromURL();
+      localStorage.removeItem(`scores-${difficulty}`);
+      renderScores();
+    }
+
+    resetBtn.addEventListener('click', resetGame);
+    window.onload = () => {
+      resetGame();
+      renderScores();
+    };
+  </script>
+</body>
+</html>
