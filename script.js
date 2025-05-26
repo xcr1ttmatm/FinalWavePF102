@@ -1,3 +1,5 @@
+
+// 2
 const grid = document.getElementById('grid');
 const message = document.getElementById('message');
 const resetBtn = document.getElementById('resetBtn');
@@ -7,6 +9,7 @@ const highScoresList = document.getElementById('highScores');
 let minePositions = [];
 let score = 0;
 
+// 3
 function getDifficultyFromURL() {
   const params = new URLSearchParams(window.location.search);
   return params.get('difficulty') || 'easy';
@@ -20,6 +23,7 @@ function getMineCount(difficulty) {
   }
 }
 
+// 4
 function formatDifficultyText(difficulty, mineCount) {
   const capitalized = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
   return `Difficulty: ${capitalized} (${mineCount} Bomb${mineCount > 1 ? 's' : ''})`;
@@ -33,6 +37,7 @@ function generateMines(count) {
   return Array.from(positions);
 }
 
+// 5
 function playSound(id) {
   const sound = document.getElementById(id);
   if (sound) {
@@ -41,6 +46,7 @@ function playSound(id) {
   }
 }
 
+// 6
 function resetGame() {
   grid.innerHTML = '';
   message.textContent = '';
@@ -61,6 +67,7 @@ function resetGame() {
   }
 }
 
+// 7
 function handleClick(event) {
   const tile = event.currentTarget;
   const index = parseInt(tile.dataset.index);
@@ -83,6 +90,7 @@ function handleClick(event) {
   }
 }
 
+// 8
 function revealAllMines() {
   document.querySelectorAll('.tile').forEach(tile => {
     const index = parseInt(tile.dataset.index);
@@ -103,6 +111,7 @@ function checkWin() {
   }
 }
 
+// 9
 function saveScore(score) {
   const difficulty = getDifficultyFromURL();
   const key = `scores-${difficulty}`;
@@ -125,6 +134,7 @@ function getOrdinalSuffix(n) {
   }
 }
 
+// 10
 function renderScores() {
   const difficulty = getDifficultyFromURL();
   const key = `scores-${difficulty}`;
@@ -142,6 +152,7 @@ function clearScores() {
   renderScores();
 }
 
+// 11
 function handleBack() {
   window.location.href = 'dashboard.html';
 }
